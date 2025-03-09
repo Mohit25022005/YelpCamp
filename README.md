@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-"# YelpCamp" 
+ 
 =======
 # YelpCamp
 YelpCamp is a full-stack website project where users can create and review campgrounds.
@@ -60,4 +59,4 @@ This project is being created created using Node.js, Express, MongoDB, and Boots
 ![login,register](https://user-images.githubusercontent.com/51289274/113734300-d8f6e300-9718-11eb-801e-5cb4698a1560.png)
 
 
->>>>>>> master
+
