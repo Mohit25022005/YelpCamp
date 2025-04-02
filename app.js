@@ -30,12 +30,8 @@ const reviewRoutes=require('./routes/reviews');
 const MongoDBStore = require("connect-mongo")(session); 
 
 const dbUrl=process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
-mongoose.connect(dbUrl,{
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-})
+mongoose.set('strictQuery', true);
+mongoose.connect(dbUrl)
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -91,28 +87,29 @@ app.use(helmet()); //this will automatically enable all 11 middleware defined in
 
 const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
-    "https://api.tiles.mapbox.com/",
-    "https://api.mapbox.com/",
-    "https://kit.fontawesome.com/",
+    // "https://api.tiles.mapbox.com/",
+    // "https://api.mapbox.com/",
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
+    "https://cdn.maptiler.com/", // add this
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
     "https://stackpath.bootstrapcdn.com/",
-    "https://api.mapbox.com/",
-    "https://api.tiles.mapbox.com/",
+    // "https://api.mapbox.com/",
+    // "https://api.tiles.mapbox.com/",
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
-    "https://kit.fontawesome.com/",
-    "https://fonts.google.com/",
+    "https://cdn.jsdelivr.net",
+    "https://cdn.maptiler.com/", // add this
 ];
 const connectSrcUrls = [
-    "https://api.mapbox.com/",
-    "https://a.tiles.mapbox.com/",
-    "https://b.tiles.mapbox.com/",
-    "https://events.mapbox.com/",
+    // "https://api.mapbox.com/",
+    // "https://a.tiles.mapbox.com/",
+    // "https://b.tiles.mapbox.com/",
+    // "https://events.mapbox.com/",
+    "https://api.maptiler.com/", // add this
 ];
 const fontSrcUrls = [];
 app.use(
@@ -132,6 +129,7 @@ app.use(
                 "https://images.unsplash.com/",
                 "https://www.pexels.com/",
                 "https://fontawesome.com/",
+                "https://api.maptiler.com/",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
         },

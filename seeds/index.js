@@ -1,12 +1,9 @@
 const mongoose=require('mongoose');
+mongoose.set('strictQuery', false);
 const Campground=require('../models/campground');
 const cities=require('./cities');
 const {descriptors,places}=require('./seedHelpers');
-mongoose.connect('mongodb://localhost:27017/yelp-camp',{
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-})
+mongoose.connect('mongodb://localhost:27017/yelp-camp')
 
 
 const db = mongoose.connection;

@@ -1,7 +1,7 @@
 const Campground=require('../models/campground');
-const mbxGeocoding=require('@mapbox/mapbox-sdk/services/geocoding');
-const mapBoxToken=process.env.MAPBOX_TOKEN;
-const geocoder=mbxGeocoding({ accessToken: mapBoxToken });
+const maptilerClient = require("@maptiler/client");
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
+
 const {cloudinary}=require('../cloudinary');
 
 module.exports.index=async(req,res)=>{
@@ -18,13 +18,9 @@ module.exports.createCampground=async (req,res,next)=>{
     
     //instead of writing joi schema and validating here I will define middleware (validateCampgroud) which is passed as an argument  before this funtions runs
    
-    const geoData= await geocoder.forwardGeocode({
-        query: req.body.campground.location,
-        limit: 1
-      }).send()
-
-    const campground=new Campground(req.body.campground);
-    campground.geometry=geoData.body.features[0].geometry;
+    const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
+    const campground = new Campground(req.body.campground);
+    campground.geometry = geoData.features[0].geometry;
     campground.images=req.files.map(f=>({url:f.path, filename:f.filename}));  //it will make an array which will contain objects(in which we have url and filename of image)
     campground.author=req.user._id;
     // console.log(campground);
@@ -62,6 +58,8 @@ module.exports.updateCampground=async(req,res,next)=>{
     const {id}=req.params;
     // console.log(req.body);
     const campground=await Campground.findByIdAndUpdate(id,req.body.campground,{runValidators:true,new:true});
+    const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
+    campground.geometry = geoData.features[0].geometry; 
     const imgs=req.files.map(f=>({url:f.path, filename:f.filename}));
     campground.images.push(...imgs); //push on existing images
     await campground.save();

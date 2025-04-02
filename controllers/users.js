@@ -31,9 +31,11 @@ module.exports.login=(req,res)=>{
     delete req.session.returnTo; //since we dont want this to sit inside our session once we are done using it
     res.redirect(redirectUrl);
 }
-module.exports.logout=(req,res)=>{
-    req.logout();
-    req.flash('success','Goodbye!');
-    res.redirect('/campgrounds');
-}
-
+module.exports.logout = (req, res, next) => {
+    req.logout((err) => {
+        if (err) {
+            return next(err); // Pass the error to Express error handler
+        }
+        res.redirect('/campgrounds'); // Redirect after successful logout
+    });
+};

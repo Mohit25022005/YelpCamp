@@ -7,7 +7,7 @@
             <div class="carousel-inner">
             <% campground.images.forEach((img,i) =>{ %>
               <div class="carousel-item <%= i===0?'active':'' %>">
-                <img src="<%= img.url %>" class="d-block w-100" style="height: 60vh;" alt="">
+                <img crossorigin="anonymous" src="<%= img.url %>" class="d-block w-100" alt="">
               </div>
             <% }) %> 
             </div>
@@ -99,8 +99,8 @@
 </div>
 
 <script>
-    const mapToken= '<%-process.env.MAPBOX_TOKEN%>' ; //we will use this in showPageMap.js javascript file since ejs dont work in javacript file we r saving it in variable mapToken here only
-    const campground= <%-JSON.stringify(campground)%>;  // just camground will give syntax error as few things ex id will not be a valid javacript  so we need to do JSON.stringify to get rid of that
+    const maptilerApiKey = '<%- process.env.MAPTILER_API_KEY %>';//we will use this in showPageMap.js javascript file since ejs dont work in javacript file we r saving it in variable mapToken here only
+    const campground = <%- JSON.stringify(campground)% > // just camground will give syntax error as few things ex id will not be a valid javacript  so we need to do JSON.stringify to get rid of that
 </script> 
 <!-- //we need it before the below script runs which will be using this mapToken variable -->
 
